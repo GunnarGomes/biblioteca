@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resultados da Busca</title>
+    <link rel="shortcut icon" href="{{ url_for('static', filename='img/favicon.ico') }}" type="image/x-icon">
+</head>
+<body>
+    <h1>Resultados</h1>
+    <a href="/user/professor">Voltar</a>
+    <ul>
+        {% for livro in livros %}
+        <li>
+            <form method="post" action="{{ url_for('bp_cad.LivroCad') }}">
+                <h2>{{ livro.titulo }}</h2>
+                <p><strong>Autor(es):</strong> {{ livro.autores }}</p>
+                <p><strong>Data de Publicação:</strong> {{ livro.publicacao }}</p>
+                <p><strong>Descrição:</strong> {{ livro.descricao }}</p>
+                <p><strong>ISBN:</strong> {{ livro.isbn }}</p>
+
+                <!-- Enviando os dados via POST -->
+                <input type="hidden" name="titulo" value="{{ livro.titulo }}">
+                <input type="hidden" name="autor" value="{{ livro.autores }}">
+                <input type="hidden" name="data" value="{{ livro.publicacao }}">
+                <input type="hidden" name="descricao" value="{{ livro.descricao }}">
+                <input type="hidden" name="isbn" value="{{ livro.isbn }}">
+
+                <button type="submit">Cadastrar</button>
+            </form>
+        </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

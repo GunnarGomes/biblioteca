@@ -76,6 +76,10 @@ def CadEmp():
         flash("emprestimo cadastrado com sucesso","success")
     return render_template('cadastro/cadEmp.html',alunos = al, livros = li)
 
+@bp_cad.route('/user/cadastro-professor')
+def CadastroProf():
+    return render_template('cadastro/cadProf.html')
+
 @bp_cad.route('/user/devolucao/<int:idEmp>',methods=["GET"])
 def Devolvido(idEmp):
     db.Devolucao(id_emprestimo=idEmp)

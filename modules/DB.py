@@ -115,9 +115,13 @@ class DB():
             result = conn.execute(query).fetchall()
 
             # Criando a lista de dicionários
-            emp = [{"id_emprestimo":row[0],"aluno": row[1], "livro": row[2],"dtemp":row[3],"dtenv":row[4],"status":row[5]} for row in result if row[5] != 1]
-            # debugger super top slk
-            # print(emp) 
+            emp = [{"id_emprestimo":row[0],
+                    "aluno": row[1], 
+                    "livro": row[2],
+                    "dtemp":row[3],
+                    "dtenv":row[4],
+                    "status":row[5]} for row in result if row[5] != 1]
+            # debugger super top slk 
             return emp
     def Devolucao(self, id_emprestimo):
         with self.engine.connect() as conn:

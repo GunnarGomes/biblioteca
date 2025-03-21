@@ -21,7 +21,15 @@
             </ul>
         </div>
     </nav>
-    
+    {% with messages = get_flashed_messages(with_categories=True) %}
+    {% if messages %}
+        {% for category, message in messages %}
+        <div class="alert alert-{{ category }} mt-5">
+            {{ message }}
+        </div>
+        {% endfor %}
+    {% endif %}
+    {% endwith %}
     <div class="container vh-100 d-flex align-items-center justify-content-center">
         <form method="post" class="mt-5 border p-5 rounded w-50">
             <label for="isbn" class="">ISBN</label>
@@ -30,6 +38,7 @@
             <input type="text" class="form-control" name="titulo" id="titulo">
             <button type="submit" class="btn btn-primary form-control mt-3">Enviar</button>
         </form>
+
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>

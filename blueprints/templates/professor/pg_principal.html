@@ -21,8 +21,17 @@
             </div>
         </nav>
     </header>
+    {% with messages = get_flashed_messages(with_categories=True) %}
+        {% if messages %}
+            {% for category, message in messages %}
+            <div class="alert alert-{{ category }} mt-5">
+                {{ message }}
+            </div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
 
-    <divc class="container vh-100 d-flex align-items-center justify-content-center">
+    <div class="container vh-100 d-flex align-items-center justify-content-center">
         <div id="dataclass" class="container mt-5 p-5 border rounded">
             <table id="empTable" class="table table-striped nowrap justify-content-bottom">
                 <thead>
@@ -47,8 +56,8 @@
                 </tbody>
             </table>
         </div>
-    </divc>
-    
+    </div>
+
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> <!-- Carregar jQuery -->
     <script src="https://cdn.datatables.net/2.2.2/js/dataTables.js"></script> <!-- Carregar DataTables -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>

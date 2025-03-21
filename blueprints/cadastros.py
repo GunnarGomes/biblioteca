@@ -73,11 +73,13 @@ def CadEmp():
         dataEmp = request.form.get('dataEmprestimo')
         dataDev = request.form.get('dataDevolucao')
         db.CadastrarEmprestimo(aluno_id=aluno_id,livro_id=livro_id,professor_id=session.get('id'),data_emprestimo=dataEmp,data_devolucao=dataDev)
+        flash("emprestimo cadastrado com sucesso","success")
     return render_template('cadastro/cadEmp.html',alunos = al, livros = li)
 
 @bp_cad.route('/user/devolucao/<int:idEmp>',methods=["GET"])
 def Devolvido(idEmp):
     db.Devolucao(id_emprestimo=idEmp)
+    flash("Devolução feita","success")
     return redirect(url_for("bp_professor.PgProf"))
 
 @bp_cad.before_request

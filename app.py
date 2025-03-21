@@ -19,4 +19,4 @@ app.register_blueprint(bp_cad)
 
 
 if __name__ == '__main__':
-    (app.run(debug=True,port=9091))
+    ((app.run(debug=True,port=9091)))

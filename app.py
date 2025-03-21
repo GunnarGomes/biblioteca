@@ -11,7 +11,7 @@ seckey = os.getenv("SECRETEKEY")
 
 
 app = Flask(__name__)
-app.secret_key = "teste"
+app.secret_key = seckey
 
 app.register_blueprint(bp_login)
 app.register_blueprint(bp_professor)

@@ -5,7 +5,6 @@ bp_login = Blueprint('bp_login',__name__,template_folder='templates')
 
 @bp_login.route('/',methods=["GET","POST"])
 def Login():
-    session.clear()
     if request.method == "POST":
         cpf_data = request.form['cpf']
         senha_data = request.form['senha']
@@ -21,6 +20,9 @@ def Login():
 
             return redirect(url_for('bp_professor.PgProf'))
         else:
-            return redirect(url_for('bp_login.Login')) 
+            print("Chamando flash com erro...")
+            flash("Deu erro", "danger")
+            session.modified = True  # Força o Flask a reconhecer mudanças na sessão
+            return redirect(url_for('bp_login.Login'))
 
     return render_template('login/login.html')

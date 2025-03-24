@@ -76,8 +76,22 @@ def CadEmp():
         flash("emprestimo cadastrado com sucesso","success")
     return render_template('cadastro/cadEmp.html',alunos = al, livros = li)
 
-@bp_cad.route('/user/cadastro-professor')
+@bp_cad.route('/user/cadastro-professor',methods=["GET", "POST"])
 def CadastroProf():
+    if request.method == "POST":
+        nome = request.form.get('nome')
+        email = request.form.get('email')
+        cpf = request.form.get('cpf')
+        senha = request.form.get('senha')
+
+        # Salvando o aluno no banco de dados
+        resultado = db.cadastrar_professor(nome, email, cpf, senha)
+
+        if resultado["status"] == "sucesso":
+            flash("professor cadastrado com sucesso!", "success")
+            return redirect(url_for('bp_cad.CadastroProf'))
+        else:
+            flash(f"Erro ao cadastrar professor: {resultado['mensagem']}", "error")
     return render_template('cadastro/cadProf.html')
 
 @bp_cad.route('/user/devolucao/<int:idEmp>',methods=["GET"])

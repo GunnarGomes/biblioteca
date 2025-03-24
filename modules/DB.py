@@ -68,7 +68,6 @@ class DB():
                     return {"status": "erro", "mensagem": str(e)}
         
     def cadastrar_aluno(self, nome, email, serie):
-        
         try:
             with self.engine.connect() as conn:
                 with conn.begin():  # Inicia a transação
@@ -78,6 +77,18 @@ class DB():
                         {"nome": nome, "email": email, "serie": serie}
                     )
             return {"status": "sucesso", "mensagem": "Aluno cadastrado!"}
+        except Exception as e:
+            return {"status": "erro", "mensagem": str(e)}
+    def cadastrar_professor(self,nome,email,cpf,senha):
+        try:
+            with self.engine.connect() as conn:
+                with conn.begin():  # Inicia a transação
+                    conn.execute(
+                        text("""INSERT INTO professores (nome, email, cpf, senha_hash) 
+                                VALUES (:nome, :email, :cpf, :senha)"""),
+                        {"nome": nome, "email": email, "cpf": cpf, "senha":CriptografiaDePontaGrossa(senha)}
+                    )
+            return {"status": "sucesso", "mensagem": "professor cadastrado!"}
         except Exception as e:
             return {"status": "erro", "mensagem": str(e)}
     def CadastrarEmprestimo(self,aluno_id,livro_id,professor_id,data_emprestimo,data_devolucao):

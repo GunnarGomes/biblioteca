@@ -9,17 +9,7 @@
 </head>
 <body>
     <header class="container">
-        <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
-            <div class="collapse navbar-collapse ">
-                <ul class="navbar-nav mr-auto">
-                    <li class="nav-item active"><a href="{{url_for('bp_professor.PgProf')}}" class="nav-link">Pagina inicial</a></li>
-                    <li class="nav-item active"><a href="{{url_for('bp_cad.CadAl')}}" class="nav-link">Cadastrar Aluno</a></li>
-                    <li class="nav-item active"><a href="{{url_for('bp_cad.CadLi')}}" class="nav-link">Cadastrar Livro</a></li>
-                    <li class="nav-item active"><a href="{{url_for('bp_cad.CadEmp')}}" class="nav-link">Cadastrar Emprestimo</a></li>
-                    <li class="nav-item active"><a href="{{url_for('bp_cad.CadastroProf')}}" class="nav-link">Cadastro professor</a></li>
-                </ul>
-            </div>
-        </nav>
+        {% include 'navbar/navbar.html' %}
     </header>
     <div class="container">
 

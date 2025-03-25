@@ -24,5 +24,11 @@ def Login():
             flash("Deu erro", "danger")
             session.modified = True  # Força o Flask a reconhecer mudanças na sessão
             return redirect(url_for('bp_login.Login'))
-
     return render_template('login/login.html')
+
+@bp_login.route('/logout')
+def Logout():
+    session.clear()  # Remove todas as chaves da sessão
+    flash("Logout realizado com sucesso!", "info")
+    return redirect(url_for('bp_login.Login'))
+

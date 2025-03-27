@@ -1,11 +1,30 @@
-<nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
-    <div class="collapse navbar-collapse">
-        <ul class="navbar-nav mr-auto">
-            <li class="nav-item active"><a href="{{ url_for('bp_professor.PgProf') }}" class="nav-link">Página Inicial</a></li>
-            <li class="nav-item active"><a href="{{ url_for('bp_cad.CadEmp') }}" class="nav-link">Cadastrar Empréstimo</a></li>
-            <li class="nav-item active"><a href="{{ url_for('bp_cad.CadLi') }}" class="nav-link">Cadastrar Livro</a></li>
-            <li class="nav-item active"><a href="{{ url_for('bp_cad.CadastroProf') }}" class="nav-link">Cadastro Professor</a></li>
-            <li class="nav-item"><a href="{{ url_for('bp_login.Logout') }}" class="nav-link">Logout</a></li>
-        </ul>
+<nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
+    <div class="container-fluid">
+        <!-- Botão de Toggle para abrir o menu em telas pequenas -->
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" 
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <!-- Itens do Menu -->
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item active">
+                    <a href="{{ url_for('bp_professor.PgProf') }}" class="nav-link">Página Inicial</a>
+                </li>
+                <li class="nav-item active">
+                    <a href="{{ url_for('bp_cad.CadEmp') }}" class="nav-link">Cadastrar Empréstimo</a>
+                </li>
+                <li class="nav-item active">
+                    <a href="{{ url_for('bp_cad.CadLi') }}" class="nav-link">Cadastrar Livro</a>
+                </li>
+                <li class="nav-item active">
+                    <a href="{{ url_for('bp_cad.CadastroProf') }}" class="nav-link">Cadastro Professor</a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ url_for('bp_login.Logout') }}" class="nav-link">Logout</a>
+                </li>
+            </ul>
+        </div>
     </div>
 </nav>

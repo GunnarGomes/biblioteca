@@ -117,10 +117,12 @@ class DB():
                 livros.titulo,
                 DATE_FORMAT(emprestimos.data_emprestimo, '%d/%m/%Y') AS data_emprestimo,
                 DATE_FORMAT(emprestimos.data_devolucao, '%d/%m/%Y') AS data_devolucao,
-                emprestimos.status
+                emprestimos.status,
+                professores.nome
                 FROM emprestimos
                 JOIN alunos ON emprestimos.aluno_id = alunos.id
                 JOIN livros ON emprestimos.livro_id = livros.id
+                JOIN professores ON emprestimos.professor_id = professores.id
             """)
 
             result = conn.execute(query).fetchall()
@@ -131,6 +133,7 @@ class DB():
                     "livro": row[2],
                     "dtemp":row[3],
                     "dtenv":row[4],
+                    "prof":row[6],
                     "status":row[5]} for row in result if row[5] != 1]
             # debugger super top slk 
             return emp

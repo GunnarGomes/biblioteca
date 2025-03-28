@@ -2,6 +2,7 @@ from flask import Flask, session
 from blueprints.login import bp_login
 from blueprints.pg_prof import bp_professor
 from blueprints.cadastros import bp_cad
+from blueprints.modificar import bp_modificar
 from dotenv import load_dotenv
 import os
 
@@ -20,6 +21,7 @@ def inject_user():
 app.register_blueprint(bp_login)
 app.register_blueprint(bp_professor)
 app.register_blueprint(bp_cad)
+app.register_blueprint(bp_modificar)
 
 
 if __name__ == '__main__':

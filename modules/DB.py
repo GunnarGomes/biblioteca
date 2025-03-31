@@ -147,4 +147,14 @@ class DB():
             except Exception as e:
                 # Se houver algum erro durante o UPDATE, a transação será revertida
                 print(f"Ocorreu um erro: {e}")
-
+    def ModificarAluno(self, aluno_id, nome, email, serie):
+        with self.engine.connect() as conn:
+            try:
+                # Executa a atualização dos dados do aluno
+                with conn.begin():
+                    conn.execute(
+                        text("""UPDATE alunos SET nome = :nome, email = :email, serie = :serie WHERE id = :id"""),
+                        {"id": aluno_id, "nome": nome, "email": email, "serie": serie}
+                    )
+            except Exception as e:
+                print(f"Ocorreu um erro: {e}")  # Log de erro

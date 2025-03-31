@@ -3,9 +3,148 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Editar Aluno</title>
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Select2 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/css/select2.min.css" rel="stylesheet">
 </head>
 <body>
+    {% include 'navbar/navbar.html' %}
+    <div class="container vh-100 d-flex align-items-center justify-content-center">
+    <div class="container mt-5 p-5 border rounded">
+        <!-- Select para escolher o aluno -->
+        <label for="select-aluno">Escolha um aluno:</label>
+        <select id="select-aluno" class="form-select select2" style="width: 100%;">
+            <option value="">Selecione um aluno</option>
+        </select>
+
+        <!-- Loading Spinner -->
+        <div id="loading" class="d-none text-center mt-3">
+            <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Carregando...</span>
+            </div>
+        </div>
+
+        <!-- Informações do aluno -->
+        <div id="aluno-info" class="d-none mt-4">
+            <h4>Informações do Aluno</h4>
+            <p><strong>Nome:</strong> <span id="aluno-nome"></span></p>
+            <p><strong>Email:</strong> <span id="aluno-email"></span></p>
+            <p><strong>Série:</strong> <span id="aluno-telefone"></span></p>
+            
+            <!-- Formulário para edição dos dados do aluno -->
+            <h4 class="mt-4">Editar Dados</h4>
+            <form id="form-editar-aluno">
+                <div class="mb-3">
+                    <label for="nome" class="form-label">Nome</label>
+                    <input type="text" id="nome" class="form-control">
+                </div>
+                <div class="mb-3">
+                    <label for="email" class="form-label">Email</label>
+                    <input type="email" id="email" class="form-control">
+                </div>
+                <div class="mb-3">
+                    <label for="serie" class="form-label">Série</label>
+                    <input type="text" id="serie" class="form-control">
+                </div>
+                <button type="submit" class="btn btn-primary">Salvar Alterações</button>
+            </form>
+        </div>
+    </div>
+</div>
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- jQuery (necessário para Select2) -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <!-- Select2 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            // Mostrar loading enquanto carrega os alunos
+            $("#loading").removeClass("d-none");
     
+            // Buscar alunos e preencher o select
+            $.getJSON('/user/get_alunos', function(data) {
+                let select = $("#select-aluno");
+                select.empty().append('<option value="">Selecione um aluno</option>');
+                data.forEach(aluno => {
+                    select.append(`<option value="${aluno.id}">${aluno.nome}</option>`);
+                });
+                // Esconde o loading após carregar os alunos
+                $("#loading").addClass("d-none");
+            }).fail(function() {
+                alert("Erro ao carregar alunos.");
+                $("#loading").addClass("d-none");
+            });
+    
+            // Buscar detalhes do aluno ao selecionar
+            $("#select-aluno").change(function() {
+                let alunoId = $(this).val();
+                if (!alunoId) return;
+    
+                // Mostrar loading ao buscar as informações do aluno
+                $("#loading").removeClass("d-none");
+    
+                $.getJSON(`/user/get_aluno/${alunoId}`)
+                .done(function(aluno) {
+                    // Preenche as informações do aluno
+                    $("#aluno-nome").text(aluno.nome);
+                    $("#aluno-email").text(aluno.email);
+                    $("#aluno-telefone").text(aluno.serie);
+                    $("#nome").val(aluno.nome); // Preenche o campo de nome
+                    $("#email").val(aluno.email); // Preenche o campo de email
+                    $("#serie").val(aluno.serie); // Preenche o campo de série
+                    $("#aluno-info").removeClass("d-none"); // Exibe as informações do aluno
+                })
+                .fail(function() {
+                    alert("Erro ao buscar aluno.");
+                })
+                .always(function() {
+                    // Esconde o loading após buscar as informações
+                    $("#loading").addClass("d-none");
+                });
+            });
+    
+            // Salvar alterações
+            $("#form-editar-aluno").submit(function(e) {
+                e.preventDefault();
+    
+                let alunoId = $("#select-aluno").val();
+                let nome = $("#nome").val();
+                let email = $("#email").val();
+                let serie = $("#serie").val();
+    
+                // Mostrar loading durante a atualização
+                $("#loading").removeClass("d-none");
+    
+                // Enviar as alterações para o backend
+                $.ajax({
+                    url: `/user/editar_aluno/${alunoId}`,
+                    type: "POST",
+                    data: {
+                        nome: nome,
+                        email: email,
+                        serie: serie
+                    },
+                    success: function(response) {
+                        alert(response.mensagem); // Exibe a mensagem de sucesso
+                        $("#loading").addClass("d-none");
+                    },
+                    error: function() {
+                        alert("Erro ao salvar alterações.");
+                        $("#loading").addClass("d-none");
+                    }
+                });
+            });
+        });
+    </script>
+    
+
 </body>
 </html>

@@ -16,7 +16,6 @@ def Login():
             session['user'] = cpf_data
             session['token'] = 'testePorEnquanto'
             session['id'] = user_id[0]
-            flash("Login bem-sucedido!", "success")
 
             return redirect(url_for('bp_professor.PgProf'))
         else:

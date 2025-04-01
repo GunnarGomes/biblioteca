@@ -68,7 +68,10 @@
         $(document).ready(function() {
             // Mostrar loading enquanto carrega os alunos
             $("#loading").removeClass("d-none");
-    
+            $("#select-aluno").select2({
+                placeholder: "Selecione um aluno",
+                allowClear: true
+            });
             // Buscar alunos e preencher o select
             $.getJSON('/user/get_alunos', function(data) {
                 let select = $("#select-aluno");
@@ -142,7 +145,9 @@
                     }
                 });
             });
+            
         });
+
     </script>
     
 

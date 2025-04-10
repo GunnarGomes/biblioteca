@@ -51,5 +51,25 @@ def editar_aluno(aluno_id):
         # Caso ocorra algum erro no processo de atualização
         return jsonify({"status": "erro", "mensagem": str(e)}), 500
 
-# Método para modificar aluno
+@bp_modificar.route('/user/deletar_aluno/<int:aluno_id>', methods=['DELETE'])
+def deletar_aluno(aluno_id):
+    try:
+        with db.engine.connect() as conn:
+            with conn.begin():
+                aluno = conn.execute(
+                    text("SELECT id FROM alunos WHERE id = :id"),
+                    {"id": aluno_id}
+                ).fetchone()
+                if not aluno:
+                    return jsonify({"mensagem": "Aluno não encontrado."}), 404
+
+                conn.execute(
+                    text("DELETE FROM alunos WHERE id = :id"),
+                    {"id": aluno_id}
+                )
+
+        return jsonify({"mensagem": "Aluno deletado com sucesso!"})
+    except Exception as e:
+        return jsonify({"mensagem": f"Erro ao deletar aluno: {str(e)}"}), 500
+
 

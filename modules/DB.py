@@ -158,3 +158,15 @@ class DB():
                     )
             except Exception as e:
                 print(f"Ocorreu um erro: {e}")  # Log de erro
+    def deletar_aluno(self, aluno_id):
+        with self.engine.connect() as conn:
+            try:
+                with conn.begin():
+                    conn.execute(
+                        text("DELETE FROM alunos WHERE id = :id"),
+                        {"id": aluno_id}
+                    )
+                return {"status": "sucesso", "mensagem": "Aluno deletado com sucesso!"}
+            except Exception as e:
+                print(f"Erro ao deletar aluno: {e}")
+                return {"status": "erro", "mensagem": str(e)}

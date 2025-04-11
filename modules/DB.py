@@ -95,8 +95,11 @@ class DB():
         with self.engine.connect() as conn:
              with conn.begin():
                   conn.execute(
-                       text(""" INSERT INTO emprestimos(aluno_id,livro_id,professor_id,data_emprestimo,data_devolucao) VALUES (:aluno_id,:livro_id,:professor_id,:data_emprestimo,:data_devolucao)"""),
-                       {"aluno_id":aluno_id,"livro_id":livro_id,"professor_id":professor_id,"data_emprestimo":data_emprestimo,"data_devolucao":data_devolucao})
+                       text(""" 
+                        INSERT INTO emprestimos(aluno_id,livro_id,professor_id,data_emprestimo,data_devolucao) 
+                        VALUES (:aluno_id,:livro_id,:professor_id,:data_emprestimo,:data_devolucao)"""),
+                       {"aluno_id":aluno_id,"livro_id":livro_id,"professor_id":professor_id,"data_emprestimos":data_emprestimo,"data_devolucao":data_devolucao}
+                       )
     def DadosAlunos(self):
         with self.engine.connect() as conn:
              dados = conn.execute(text(""" SELECT id, nome FROM alunos"""))

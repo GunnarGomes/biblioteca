@@ -3,6 +3,7 @@ import hashlib
 import os
 from dotenv import load_dotenv
 from flask import jsonify
+from datetime import date
 
 load_dotenv()
 
@@ -138,7 +139,9 @@ class DB():
                     "dtenv":row[4],
                     "prof":row[6],
                     "status":row[5]} for row in result if row[5] != 1]
-            # debugger super top slk 
+            for dados in emp:
+                if date.today() > emp[dados]["dtenv"]:
+                    print(f"{emp[dados]["aluno"]}: atrasado desde {emp[dados]["dtenv"]}")
             return emp
     def Devolucao(self, id_emprestimo):
         with self.engine.connect() as conn:
@@ -173,3 +176,7 @@ class DB():
             except Exception as e:
                 print(f"Erro ao deletar aluno: {e}")
                 return {"status": "erro", "mensagem": str(e)}
+
+if __name__ == '__main__':
+    db = DB()
+    db.DadosEmprestimos()

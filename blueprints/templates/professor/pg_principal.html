@@ -13,7 +13,7 @@
         {% include 'navbar/navbar.html' %}
     </header>
     
-    <div class="container vh-100 d-flex align-items-center justify-content-center">
+    <div class="container d-flex align-items-center justify-content-center">
         <div id="dataclass" class="container mt-5 p-5 border rounded">
             <div class="table-responsive">
             <table id="empTable" class="table table-striped nowrap justify-content-bottom">
@@ -54,6 +54,43 @@
         </div>
         </div>
     </div>
+    <!-- Segunda Tabela: Livros Atrasados -->
+    <!-- Segunda Tabela: Livros Atrasados -->
+    <div id="atrasados" class="container mt-3 p-4 border rounded bg-light">
+        <h4 class="mb-3">Livros Atrasados</h4>
+        <div class="table-responsive">
+            <table id="atrasadosTable" class="table table-striped nowrap">
+                <thead>
+                    <tr>
+                        <th>Aluno</th>
+                        <th>Livro</th>
+                        <th>Emprestimo</th>
+                        <th>Devolução</th>
+                        <th>Professor</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for emprestimo in emprestimos %}
+                        {% if emprestimo['status'] == 3 %}
+                            <tr>
+                                <td>{{ emprestimo['aluno'] }}</td>
+                                <td>{{ emprestimo['livro'] }}</td>
+                                <td>{{ emprestimo['dtemp'] }}</td>
+                                <td>{{ emprestimo['dtenv'] }}</td>
+                                <td>{{ emprestimo['prof'] }}</td>
+                                <td>
+                                    <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#devolvidoModal" data-id="{{ emprestimo['id_emprestimo'] }}">
+                                        Entregue
+                                    </button>
+                                </td>
+                            </tr>
+                        {% endif %}
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
 
     <!-- Modal -->
     <div class="modal fade" id="devolvidoModal" tabindex="-1" aria-labelledby="devolvidoModalLabel" aria-hidden="true">
@@ -79,7 +116,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         new DataTable('#empTable', { responsive: true });
-
+        new DataTable('#atrasadosTable', { responsive: true });
         $('#devolvidoModal').on('show.bs.modal', function(event) {
             let button = $(event.relatedTarget);
             let idEmprestimo = button.data('id');

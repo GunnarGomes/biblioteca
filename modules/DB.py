@@ -3,7 +3,7 @@ import hashlib
 import os
 from dotenv import load_dotenv
 from flask import jsonify
-from datetime import date
+from datetime import date, datetime
 
 load_dotenv()
 
@@ -114,15 +114,16 @@ class DB():
             return livros
     def DadosEmprestimos(self):
         with self.engine.connect() as conn:
-            # Consulta utilizando JOIN para unir emprestimos, alunos e livros em uma única query
+            # Consulta com JOIN, agora incluindo aluno_id
             query = text("""
                 SELECT emprestimos.id,
-                alunos.nome,
-                livros.titulo,
-                DATE_FORMAT(emprestimos.data_emprestimo, '%d/%m/%Y') AS data_emprestimo,
-                DATE_FORMAT(emprestimos.data_devolucao, '%d/%m/%Y') AS data_devolucao,
-                emprestimos.status,
-                professores.nome
+                    alunos.id AS aluno_id,
+                    alunos.nome,
+                    livros.titulo,
+                    DATE_FORMAT(emprestimos.data_emprestimo, '%d/%m/%Y') AS data_emprestimo,
+                    DATE_FORMAT(emprestimos.data_devolucao, '%d/%m/%Y') AS data_devolucao,
+                    emprestimos.status,
+                    professores.nome
                 FROM emprestimos
                 JOIN alunos ON emprestimos.aluno_id = alunos.id
                 JOIN livros ON emprestimos.livro_id = livros.id
@@ -131,17 +132,26 @@ class DB():
 
             result = conn.execute(query).fetchall()
 
-            # Criando a lista de dicionários
-            emp = [{"id_emprestimo":row[0],
-                    "aluno": row[1], 
-                    "livro": row[2],
-                    "dtemp":row[3],
-                    "dtenv":row[4],
-                    "prof":row[6],
-                    "status":row[5]} for row in result if row[5] != 1]
+            # Lista de dicionários com os dados
+            emp = [{"id_emprestimo": row[0],
+                    "aluno_id": row[1],
+                    "aluno": row[2], 
+                    "livro": row[3],
+                    "dtemp": row[4],
+                    "dtenv": row[5],
+                    "status": row[6],
+                    "prof": row[7]} for row in result if row[6] != 1]
+
             for dados in emp:
-                if date.today() > emp[dados]["dtenv"]:
-                    print(f"{emp[dados]["aluno"]}: atrasado desde {emp[dados]["dtenv"]}")
+                data_devolucao = datetime.strptime(dados["dtenv"], "%d/%m/%Y").date()
+                if date.today() > data_devolucao:
+                    with self.engine.connect() as con:
+                        with con.begin():
+                            con.execute(
+                                text("UPDATE emprestimos SET status=3 WHERE aluno_id = :aluno_id AND status != 1"),
+                                {"aluno_id": dados["aluno_id"]}
+                            )
+
             return emp
     def Devolucao(self, id_emprestimo):
         with self.engine.connect() as conn:

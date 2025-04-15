@@ -36,9 +36,16 @@
                         <td>{{ emprestimo['dtenv'] }}</td>
                         <td>{{ emprestimo['prof'] }}</td>
                         <td>
-                            <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#devolvidoModal" data-id="{{ emprestimo['id_emprestimo'] }}">
-                                Devolvido
-                            </button>
+                            {% if emprestimo['status'] == 3: %}
+                                <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#devolvidoModal" data-id="{{ emprestimo['id_emprestimo'] }}">
+                                    Entregue
+                                </button>
+                            {% else %}
+                                <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#devolvidoModal" data-id="{{ emprestimo['id_emprestimo'] }}">
+                                    Entregue
+                                </button>
+                            {% endif %}
+
                         </td>
                     </tr>
                     {% endfor %}

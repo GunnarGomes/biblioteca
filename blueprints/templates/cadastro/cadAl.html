@@ -9,6 +9,30 @@
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js"></script>
     <title>Cadastro aluno</title>
+    <style>/* From Uiverse.io by csemszepp */ 
+        body {
+          width: 100%;
+          height: 100%;
+          --s: 200px; /* control the size */
+          --c1: #1d1d1d;
+          --c2: #4e4f51;
+          --c3: #3c3c3c;
+        
+          background: repeating-conic-gradient(
+                from 30deg,
+                #0000 0 120deg,
+                var(--c3) 0 180deg
+              )
+              calc(0.5 * var(--s)) calc(0.5 * var(--s) * 0.577),
+            repeating-conic-gradient(
+              from 30deg,
+              var(--c1) 0 60deg,
+              var(--c2) 0 120deg,
+              var(--c3) 0 180deg
+            );
+          background-size: var(--s) calc(var(--s) * 0.577);
+        }
+        </style>
     <link rel="shortcut icon" href="{{ url_for('static', filename='img/favicon.ico') }}" type="image/x-icon">
 </head>
 <body>
@@ -24,8 +48,8 @@
         {% endfor %}
     {% endif %}
     {% endwith %}
-    <div class="container vh-100 d-flex align-items-center justify-content-center">
-        <form method="post" class="container p-4 border rounded w-100 p-3">
+    <div class="container vh-100 d-flex align-items-center justify-content-center ">
+        <form method="post" class="container p-4 border rounded w-50 p-3 bg-light">
             <label for="nome">Nome:</label>
             <input type="text" name="nome" id="nome-inp" class="form-control">
             <label for="email">email:</label>

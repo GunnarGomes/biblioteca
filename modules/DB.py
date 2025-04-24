@@ -48,7 +48,6 @@ class DB():
                     {"cpf": cpf, "senha": senha}
                 ).fetchone()
                 if result:
-                    
                     return True, id
                 else:
                     print("Usuário não encontrado")
@@ -144,12 +143,16 @@ class DB():
 
             for dados in emp:
                 data_devolucao = datetime.strptime(dados["dtenv"], "%d/%m/%Y").date()
+                print(f"""
+                    data hoje: {date.today()}
+                    data a devolver: {data_devolucao}
+                    """)
                 if date.today() > data_devolucao:
                     with self.engine.connect() as con:
                         with con.begin():
                             con.execute(
-                                text("UPDATE emprestimos SET status=3 WHERE aluno_id = :aluno_id AND status != 1"),
-                                {"aluno_id": dados["aluno_id"]}
+                                text("UPDATE emprestimos SET status=3 WHERE id = :id_emprestimo AND status != 1"),
+                                {"id_emprestimo": dados["id_emprestimo"]}
                             )
 
             return emp

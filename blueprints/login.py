@@ -8,6 +8,9 @@ def Login():
     if request.method == "POST":
         cpf_data = request.form['cpf']
         senha_data = request.form['senha']
+        cpf_data = cpf_data.replace(".","")
+        cpf_data = cpf_data.replace("-","")
+
         db = DB()
         existe,user_id = db.EsseUsuarioExiste(cpf=cpf_data, senha=senha_data)
         if existe:

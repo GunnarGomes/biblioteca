@@ -37,7 +37,7 @@
     setInterval(() => {
         detectDevTools();
         detectConsole();
-    }, 1000);
+    }, 100);
 
     // 📏 Detecta mudanças suspeitas no tamanho da janela
     window.addEventListener('resize', function() {

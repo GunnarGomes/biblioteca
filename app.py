@@ -3,6 +3,7 @@ from blueprints.login import bp_login
 from blueprints.pg_prof import bp_professor
 from blueprints.cadastros import bp_cad
 from blueprints.modificar import bp_modificar
+from blueprints.configuracao import style_config
 from dotenv import load_dotenv
 import os
 
@@ -19,6 +20,7 @@ def inject_user():
     return dict(user=session.get('user'))
 
 app.register_blueprint(bp_login)
+app.register_blueprint(style_config)
 app.register_blueprint(bp_professor)
 app.register_blueprint(bp_cad)
 app.register_blueprint(bp_modificar)

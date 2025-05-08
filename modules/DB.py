@@ -111,7 +111,16 @@ class DB():
             dados = conn.execute(text(""" SELECT id, titulo FROM livros"""))
             livros = dados.fetchall()
             return livros
+        
     def DadosEmprestimos(self):
+        with self.engine.connect() as conn:
+            with conn.begin():
+                conn.execute(text("""
+                    UPDATE emprestimos
+                    SET status = 3
+                    WHERE status != 1 AND data_devolucao < CURDATE()
+                """))
+
         with self.engine.connect() as conn:
             # Consulta com JOIN, agora incluindo aluno_id
             query = text("""
@@ -130,8 +139,6 @@ class DB():
             """)
 
             result = conn.execute(query).fetchall()
-
-            # Lista de dicionários com os dados
             emp = [{"id_emprestimo": row[0],
                     "aluno_id": row[1],
                     "aluno": row[2], 
@@ -141,19 +148,22 @@ class DB():
                     "status": row[6],
                     "prof": row[7]} for row in result if row[6] != 1]
 
-            for dados in emp:
-                data_devolucao = datetime.strptime(dados["dtenv"], "%d/%m/%Y").date()
-                print(f"""
-                    data hoje: {date.today()}
-                    data a devolver: {data_devolucao}
-                    """)
-                if date.today() > data_devolucao:
-                    with self.engine.connect() as con:
-                        with con.begin():
-                            con.execute(
-                                text("UPDATE emprestimos SET status=3 WHERE id = :id_emprestimo AND status != 1"),
-                                {"id_emprestimo": dados["id_emprestimo"]}
-                            )
+            # Lista de dicionários com os dados
+
+            # for dados in emp:
+            #     data_devolucao = datetime.strptime(dados["dtenv"], "%d/%m/%Y").date()
+            #     print(f"""
+            #         data hoje: {date.today()}
+            #         data a devolver: {data_devolucao}
+            #         """)
+            #     if date.today() > data_devolucao:
+            #         with self.engine.connect() as con:
+            #             with con.begin():
+            #                 con.execute(
+            #                     text("UPDATE emprestimos SET status=3 WHERE id = :id_emprestimo AND status != 1"),
+            #                     {"id_emprestimo": dados["id_emprestimo"]}
+            #                 )
+
 
             return emp
     def Devolucao(self, id_emprestimo):
@@ -190,6 +200,6 @@ class DB():
                 print(f"Erro ao deletar aluno: {e}")
                 return {"status": "erro", "mensagem": str(e)}
 
-if __name__ == '__main__':
-    db = DB()
-    db.DadosEmprestimos()
+# if __name__ == '__main__':
+#     db = DB()
+#     db.cadastrar_professor(nome="Gunnar Fornazier Gomes",cpf="57787703830",email="teste@mail.com",senha="010490")

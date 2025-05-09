@@ -4,6 +4,7 @@ from blueprints.pg_prof import bp_professor
 from blueprints.cadastros import bp_cad
 from blueprints.modificar import bp_modificar
 from blueprints.configuracao import style_config
+from blueprints.relatorio import bp_relatorio
 from dotenv import load_dotenv
 import os
 
@@ -24,6 +25,7 @@ app.register_blueprint(style_config)
 app.register_blueprint(bp_professor)
 app.register_blueprint(bp_cad)
 app.register_blueprint(bp_modificar)
+app.register_blueprint(bp_relatorio)
 
 
 if __name__ == '__main__':

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    body {
+        background-color: aliceblue;
+    }
+</head>
+<body>
+    <header>
+        {% include 'navbar/navbar.html' %}
+    </header>
+
+    <div class="container vh-100 d-flex align-items-center justify-content-center">
+        <div class="container p-4 border rounded w-50 p-3 bg-light">
+            <h3>Dados:</h3>
+            <div>
+                <table class="table">
+                    <thead class="thead-light">
+                        <tr>
+                            <th scope="col">meses</th>
+                            <th scope="col">livros cadastrados</th>
+                            <th scope="col">livros emprestados</th>
+                            <th scope="col">livros devolvidos</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <th scope="row">janeiro</th>
+                        <td>23</td>
+                        <td>4</td>
+                        <td>5</td>
+                    </tr>
+               </tbody> 
+            </table>
+                
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

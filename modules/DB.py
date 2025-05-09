@@ -199,6 +199,61 @@ class DB():
             except Exception as e:
                 print(f"Erro ao deletar aluno: {e}")
                 return {"status": "erro", "mensagem": str(e)}
+    # def RelatorioMensal(self):
+    #     with self.engine.connect() as conn:
+    #         query = text("""
+    #             SELECT 
+    #                 MONTH(data_publicacao) AS mes,
+    #                 COUNT(*) AS livros_cadastrados
+    #             FROM livros
+    #             GROUP BY mes
+    #         """)
+    #         livros = {row.mes: row.livros_cadastrados for row in conn.execute(query)}
+
+    #         query2 = text("""
+    #             SELECT 
+    #                 MONTH(data_emprestimo) AS mes,
+    #                 COUNT(*) AS emprestimos
+    #             FROM emprestimos
+    #             GROUP BY mes
+    #         """)
+    #         emprestimos = {row.mes: row.emprestimos for row in conn.execute(query2)}
+
+    #         query3 = text("""
+    #             SELECT 
+    #                 MONTH(data_devolucao) AS mes,
+    #                 COUNT(*) AS devolvidos
+    #             FROM emprestimos
+    #             WHERE status = 1
+    #             GROUP BY mes
+    #         """)
+    #         devolvidos = {row.mes: row.devolvidos for row in conn.execute(query3)}
+
+
+    #     meses = range(1, 13)
+    #     resultado = []
+    #     for mes in meses:
+    #         resultado.append({
+    #             "mes": mes,
+    #             "livros_cadastrados": livros.get(mes, 0),
+    #             "livros_emprestados": emprestimos.get(mes, 0),
+    #             "livros_devolvidos": devolvidos.get(mes, 0),
+
+    #         })
+    #     return resultado
+    def EmprestimosParaRelatorio(self):
+        conn = self.engine.connect()
+        result = conn.execute(text("""
+            SELECT e.data_emprestimo, e.data_devolucao,
+                a.nome AS aluno, l.titulo AS livro, p.nome AS professor
+            FROM emprestimos e
+            JOIN alunos a ON e.aluno_id = a.id
+            JOIN livros l ON e.livro_id = l.id
+            JOIN professores p ON e.professor_id = p.id
+        """))
+
+        # Correção aqui:
+        return [dict(row._mapping) for row in result]
 
 # if __name__ == '__main__':
 #     db = DB()

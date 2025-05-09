@@ -4,41 +4,75 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    body {
-        background-color: aliceblue;
-    }
+    <style>
+        body {
+            background-color: aliceblue;
+        }
+    </style>
 </head>
 <body>
     <header>
         {% include 'navbar/navbar.html' %}
     </header>
+<div class="container d-flex align-items-center justify-content-center mt-5">
+<div class="container mt-4">
+    <h1 class="mb-4">Relatório de Empréstimos</h1>
 
-    <div class="container vh-100 d-flex align-items-center justify-content-center">
-        <div class="container p-4 border rounded w-50 p-3 bg-light">
-            <h3>Dados:</h3>
-            <div>
-                <table class="table">
-                    <thead class="thead-light">
-                        <tr>
-                            <th scope="col">meses</th>
-                            <th scope="col">livros cadastrados</th>
-                            <th scope="col">livros emprestados</th>
-                            <th scope="col">livros devolvidos</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                    <tr>
-                        <th scope="row">janeiro</th>
-                        <td>23</td>
-                        <td>4</td>
-                        <td>5</td>
-                    </tr>
-               </tbody> 
-            </table>
-                
-            </div>
-        </div>
+    <h2 class="h4">Gráfico de Empréstimos por Mês</h2>
+    <div class="mb-4">
+        <img src="{{ grafico }}" alt="Gráfico de empréstimos" class="img-fluid border rounded">
     </div>
 
+    <h2 class="h4">Tabela Resumo por Mês</h2>
+    <div class="table-responsive mb-4">
+        <table class="table table-bordered table-striped">
+            <thead class="table-light">
+                <tr>
+                    <th>Mês</th>
+                    <th>Quantidade de Empréstimos</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for linha in dados_mensais %}
+                <tr>
+                    <td>{{ linha.mes }}</td>
+                    <td>{{ linha.qtd }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <h2 class="h4">Detalhes dos Empréstimos</h2>
+    <div class="table-responsive mb-4">
+        <table class="table table-bordered table-hover">
+            <thead class="table-light">
+                <tr>
+                    <th>Data do Empréstimo</th>
+                    <th>Data de Devolução</th>
+                    <th>Aluno</th>
+                    <th>Livro</th>
+                    <th>Professor</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for emp in emprestimos %}
+                <tr>
+                    <td>{{ emp.data_emprestimo }}</td>
+                    <td>{{ emp.data_devolucao }}</td>
+                    <td>{{ emp.aluno }}</td>
+                    <td>{{ emp.livro }}</td>
+                    <td>{{ emp.professor }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <a href="{{ url_for('bp_relatorio.BaixarExcel') }}" class="btn btn-success">
+        📥 Baixar Relatório em Excel
+    </a>
+</div>
+</div>
 </body>
 </html>

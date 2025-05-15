@@ -9,7 +9,8 @@ bp_recuperacao = Blueprint('bp_recuperacao', __name__, template_folder='template
 def recuperar_senha():
     if request.method == 'POST':
         cpf = request.form.get('cpf')
-        
+        cpf = cpf.replace(".","")
+        cpf = cpf.replace("-","")
         # Validação básica
         if not cpf:
             flash("Por favor, informe seu CPF.", "error")

@@ -30,6 +30,7 @@
                 <div id="submit" class="mb-3">
                     <button type="submit" class="btn btn-primary form-control">Entrar</button>
                 </div>
+                <a href="{{ url_for('bp_recuperacao.recuperar_senha') }}">Esqueceu a senha?</a>
             </div>
         </form>
         {% with messages = get_flashed_messages(with_categories=True) %}

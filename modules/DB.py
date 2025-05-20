@@ -2,8 +2,6 @@ from sqlalchemy import create_engine, text
 import hashlib
 import os
 from dotenv import load_dotenv
-from flask import jsonify
-from datetime import date, datetime
 
 load_dotenv()
 
@@ -22,10 +20,10 @@ def CriptografiaDePontaGrossa(senha:str):
 
 class DB():
     def __init__(self):
-        user = usr                # Usuario no mysql
-        password = pasword            # Senha mega maneira, tiro isso depois
-        host = hot              # Host, onde  ta hospedado meu server sql
-        port = por             # Porta onde se acessa o mysql
+        user = usr                 # Usuario no mysql
+        password = pasword         # Senha mega maneira, tiro isso depois PS:não precisei tirar =)
+        host = hot                 # Host, onde  ta hospedado meu server sql
+        port = por                 # Porta onde se acessa o mysql
         database = databas         #  Nome do banco de dados
         self.engine = create_engine(f"mysql+pymysql://{user}:{password}@{host}:{port}/{database}")
         

@@ -147,24 +147,6 @@ class DB():
                     "dtenv": row[5],
                     "status": row[6],
                     "prof": row[7]} for row in result if row[6] != 1]
-
-            # Lista de dicionários com os dados
-
-            # for dados in emp:
-            #     data_devolucao = datetime.strptime(dados["dtenv"], "%d/%m/%Y").date()
-            #     print(f"""
-            #         data hoje: {date.today()}
-            #         data a devolver: {data_devolucao}
-            #         """)
-            #     if date.today() > data_devolucao:
-            #         with self.engine.connect() as con:
-            #             with con.begin():
-            #                 con.execute(
-            #                     text("UPDATE emprestimos SET status=3 WHERE id = :id_emprestimo AND status != 1"),
-            #                     {"id_emprestimo": dados["id_emprestimo"]}
-            #                 )
-
-
             return emp
     def Devolucao(self, id_emprestimo):
         with self.engine.connect() as conn:
@@ -199,48 +181,7 @@ class DB():
             except Exception as e:
                 print(f"Erro ao deletar aluno: {e}")
                 return {"status": "erro", "mensagem": str(e)}
-    # def RelatorioMensal(self):
-    #     with self.engine.connect() as conn:
-    #         query = text("""
-    #             SELECT 
-    #                 MONTH(data_publicacao) AS mes,
-    #                 COUNT(*) AS livros_cadastrados
-    #             FROM livros
-    #             GROUP BY mes
-    #         """)
-    #         livros = {row.mes: row.livros_cadastrados for row in conn.execute(query)}
 
-    #         query2 = text("""
-    #             SELECT 
-    #                 MONTH(data_emprestimo) AS mes,
-    #                 COUNT(*) AS emprestimos
-    #             FROM emprestimos
-    #             GROUP BY mes
-    #         """)
-    #         emprestimos = {row.mes: row.emprestimos for row in conn.execute(query2)}
-
-    #         query3 = text("""
-    #             SELECT 
-    #                 MONTH(data_devolucao) AS mes,
-    #                 COUNT(*) AS devolvidos
-    #             FROM emprestimos
-    #             WHERE status = 1
-    #             GROUP BY mes
-    #         """)
-    #         devolvidos = {row.mes: row.devolvidos for row in conn.execute(query3)}
-
-
-    #     meses = range(1, 13)
-    #     resultado = []
-    #     for mes in meses:
-    #         resultado.append({
-    #             "mes": mes,
-    #             "livros_cadastrados": livros.get(mes, 0),
-    #             "livros_emprestados": emprestimos.get(mes, 0),
-    #             "livros_devolvidos": devolvidos.get(mes, 0),
-
-    #         })
-    #     return resultado
     def EmprestimosParaRelatorio(self):
         conn = self.engine.connect()
         result = conn.execute(text("""
@@ -264,12 +205,8 @@ class DB():
             ORDER BY e.data_emprestimo DESC
         """))
         return result.fetchall()
-# No DB.py
     def LivrosCadastrados(self):
         with self.engine.connect() as conn:
             result = conn.execute(text("SELECT id, titulo, autor FROM livros"))
             return result.fetchall()
 
-# if __name__ == '__main__':
-#     db = DB()
-#     db.cadastrar_professor(nome="Gunnar Fornazier Gomes",cpf="57787703830",email="teste@mail.com",senha="010490")

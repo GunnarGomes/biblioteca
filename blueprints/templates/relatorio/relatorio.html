@@ -3,10 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Relatório de Empréstimos</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+
     <style>
         body {
             background-color: aliceblue;
+        }
+        .section-title {
+            margin-top: 2rem;
         }
     </style>
 </head>
@@ -14,65 +20,123 @@
     <header>
         {% include 'navbar/navbar.html' %}
     </header>
-<div class="container d-flex align-items-center justify-content-center mt-5">
-<div class="container mt-4">
-    <h1 class="mb-4">Relatório de Empréstimos</h1>
 
-    <h2 class="h4">Gráfico de Empréstimos por Mês</h2>
-    <div class="mb-4">
-        <img src="{{ grafico }}" alt="Gráfico de empréstimos" class="img-fluid border rounded">
-    </div>
+    <main class="container mt-5">
+        <h1 class="text-center mb-5">Relatório de Empréstimos</h1>
 
-    <h2 class="h4">Tabela Resumo por Mês</h2>
-    <div class="table-responsive mb-4">
-        <table class="table table-bordered table-striped">
-            <thead class="table-light">
-                <tr>
-                    <th>Mês</th>
-                    <th>Quantidade de Empréstimos</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for linha in dados_mensais %}
-                <tr>
-                    <td>{{ linha.mes }}</td>
-                    <td>{{ linha.qtd }}</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    </div>
+       <!-- Gráficos -->
+    <!-- Gráficos -->
+    <section>
+        <div class="mb-5 text-center">
+            <h2 class="h4 section-title">Gráfico de Empréstimos por Mês</h2>
+            <img src="{{ grafico1 }}" alt="Gráfico por mês" class="img-fluid border rounded w-50 mx-auto d-block">
+        </div>
 
-    <h2 class="h4">Detalhes dos Empréstimos</h2>
-    <div class="table-responsive mb-4">
-        <table class="table table-bordered table-hover">
-            <thead class="table-light">
-                <tr>
-                    <th>Data do Empréstimo</th>
-                    <th>Data de Devolução</th>
-                    <th>Aluno</th>
-                    <th>Livro</th>
-                    <th>Professor</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for emp in emprestimos %}
-                <tr>
-                    <td>{{ emp.data_emprestimo }}</td>
-                    <td>{{ emp.data_devolucao }}</td>
-                    <td>{{ emp.aluno }}</td>
-                    <td>{{ emp.livro }}</td>
-                    <td>{{ emp.professor }}</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    </div>
+        <div class="row g-4 text-center">
+            <div class="col-md-6">
+                <h2 class="h5">Top 10 Livros Mais Emprestados</h2>
+                <img src="{{ grafico2 }}" alt="Top 10 livros" class="img-fluid border rounded">
+            </div>
 
-    <a href="{{ url_for('bp_relatorio.BaixarExcel') }}" class="btn btn-success">
-        📥 Baixar Relatório em Excel
-    </a>
-</div>
-</div>
+            <div class="col-md-6">
+                <h2 class="h5">Distribuição por Professor</h2>
+                <img src="{{ grafico3 }}" alt="Por professor" class="img-fluid border rounded">
+            </div>
+        </div>
+    </section>
+
+
+
+        <!-- Tabela Top 10 -->
+        <section>
+            <h2 class="h4 section-title text-center">Top 10 Livros Mais Emprestados (Tabela)</h2>
+            <div class="table-responsive mb-4">
+                <table class="table table-bordered table-striped text-center">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Livro</th>
+                            <th>Autor</th>
+                            <th>Quantidade</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for livro in livros_populares %}
+                        <tr>
+                            <td>{{ livro.livro }}</td>
+                            <td>{{ livro.autor }}</td>
+                            <td>{{ livro.qtd }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Resumo mensal -->
+        <section>
+            <h2 class="h4 section-title text-center">Resumo por Mês</h2>
+            <div class="table-responsive mb-4">
+                <table class="table table-bordered table-striped text-center">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Mês</th>
+                            <th>Quantidade de Empréstimos</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for linha in dados_mensais %}
+                        <tr>
+                            <td>{{ linha.mes_ano }}</td>
+                            <td>{{ linha.qtd }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Detalhes -->
+        <section>
+            <h2 class="h4 section-title text-center">Detalhes dos Empréstimos</h2>
+            <div class="table-responsive mb-4">
+                <table class="table table-bordered table-hover text-center">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Data do Empréstimo</th>
+                            <th>Data de Devolução</th>
+                            <th>Aluno</th>
+                            <th>Livro</th>
+                            <th>Professor</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for emp in emprestimos %}
+                        <tr>
+                            <td>{{ emp.data_emprestimo }}</td>
+                            <td>{{ emp.data_devolucao }}</td>
+                            <td>{{ emp.aluno }}</td>
+                            <td>{{ emp.livro }}</td>
+                            <td>{{ emp.professor }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Botão de download -->
+    '    {% if emprestimos %}
+        <div class="d-flex gap-3 mt-4">
+            <a href="{{ url_for('bp_relatorio.BaixarExcel') }}" class="btn btn-success">
+                <i class="bi bi-file-earmark-excel"></i> Baixar Excel Completo
+            </a>
+
+            <a href="{{ url_for('bp_relatorio.BaixarCSV') }}" class="btn btn-primary">
+                <i class="bi bi-file-earmark-csv"></i> Baixar ZIP com CSVs
+            </a>
+        </div>
+        {% endif %}
+'
+    </main>
 </body>
 </html>

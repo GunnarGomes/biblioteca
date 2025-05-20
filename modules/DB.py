@@ -244,16 +244,31 @@ class DB():
     def EmprestimosParaRelatorio(self):
         conn = self.engine.connect()
         result = conn.execute(text("""
-            SELECT e.data_emprestimo, e.data_devolucao,
-                a.nome AS aluno, l.titulo AS livro, p.nome AS professor
+            SELECT 
+                e.id,
+                e.data_emprestimo, 
+                e.data_devolucao,
+                a.nome AS aluno, 
+                a.serie,
+                l.titulo AS livro, 
+                l.autor,
+                p.nome AS professor,
+                CASE 
+                    WHEN CURRENT_DATE() > e.data_devolucao THEN 'Atrasado'
+                    ELSE 'Em andamento' 
+                END AS status
             FROM emprestimos e
             JOIN alunos a ON e.aluno_id = a.id
             JOIN livros l ON e.livro_id = l.id
             JOIN professores p ON e.professor_id = p.id
+            ORDER BY e.data_emprestimo DESC
         """))
-
-        # Correção aqui:
-        return [dict(row._mapping) for row in result]
+        return result.fetchall()
+# No DB.py
+    def LivrosCadastrados(self):
+        with self.engine.connect() as conn:
+            result = conn.execute(text("SELECT id, titulo, autor FROM livros"))
+            return result.fetchall()
 
 # if __name__ == '__main__':
 #     db = DB()

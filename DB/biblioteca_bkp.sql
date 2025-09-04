@@ -18,6 +18,7 @@
 --
 -- Table structure for table `alunos`
 --
+DROP DATABASE IF EXISTS `biblioteca`;
 CREATE DATABASE `biblioteca`;
 USE `biblioteca`;
 DROP TABLE IF EXISTS `alunos`;

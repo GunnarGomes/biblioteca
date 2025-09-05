@@ -11,6 +11,6 @@ def PgProf():
 
 
 @bp_professor.before_request
-def ChecarSeOMalandroFezLogin():
+def check_login():
     if 'token' not in session:
         return redirect(url_for('bp_login.Login'))
